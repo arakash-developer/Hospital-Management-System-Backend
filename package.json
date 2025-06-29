@@ -1,0 +1,26 @@
+{
+  "name": "hospital-management-system-backend",
+  "version": "1.0.0",
+  "description": "hospital-management-system",
+  "homepage": "https://github.com/arakash-developer/Hospital-Management-System-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/arakash-developer/Hospital-Management-System-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arakash-developer/Hospital-Management-System-Backend.git"
+  },
+  "license": "ISC",
+  "author": "Atiqur Rahman Akash",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}
