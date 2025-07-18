@@ -18,6 +18,7 @@ model User {
   name      String?  // Optional
   password  String
   role      String
+  organization String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
