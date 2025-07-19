@@ -1,0 +1,6 @@
+model Doctor {
+  id             Int     @id @default(autoincrement())
+  name           String
+  specialization String
+  appointments   Appointment[]
+}

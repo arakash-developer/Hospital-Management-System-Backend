@@ -15,7 +15,9 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prisma:build": "node prisma/generate-schema.js",
+    "prisma:generate": "npm run prisma:build && prisma generate",
+    "prisma:migrate": "npm run prisma:build && prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^6.12.0",
