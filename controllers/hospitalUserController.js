@@ -51,4 +51,36 @@ const getHospitalUsers = async (req, res) => {
       }
     });
 
-    res.json(hospitalUs
+    res.json(hospitalUsers);
+  } catch (error) {
+    console.error("Get hospital users error:", error);
+    res.status(500).json({ error: "Failed to fetch hospital users" });
+  }
+};
+
+// Delete a hospital-user assignment
+const deleteHospitalUser = async (req, res) => {
+  try {
+    const { hospitalId, userId } = req.params;
+
+    await prisma.hospitalUser.delete({
+      where: {
+        userId_hospitalId: {
+          userId,
+          hospitalId
+        }
+      }
+    });
+
+    res.json({ message: "Hospital user removed successfully" });
+  } catch (error) {
+    console.error("Delete hospital user error:", error);
+    res.status(500).json({ error: "Failed to remove hospital user" });
+  }
+};
+
+module.exports = {
+  createHospitalUser,
+  getHospitalUsers,
+  deleteHospitalUser
+};
