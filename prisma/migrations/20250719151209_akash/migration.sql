@@ -1,14 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `organization` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `updatedAt` on the `User` table. All the data in the column will be lost.
-  - The `role` column on the `User` table would be dropped and recreated. This will lead to data loss if there is data in the column.
-  - Made the column `name` on table `User` required. This step will fail if there are existing NULL values in that column.
-
-*/
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('ADMIN', 'DOCTOR', 'NURSE', 'PATIENT');
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'DOCTOR', 'NURSE', 'PATIENT', 'GUEST');
 
 -- CreateEnum
 CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'SUSPENDED', 'DELETED');
@@ -16,19 +7,35 @@ CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'SUSPENDED', 'DELETED');
 -- CreateEnum
 CREATE TYPE "MembershipStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'BLOCKED');
 
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "organization",
-DROP COLUMN "updatedAt",
-ADD COLUMN     "status" "UserStatus" NOT NULL DEFAULT 'ACTIVE',
-ALTER COLUMN "name" SET NOT NULL,
-DROP COLUMN "role",
-ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'PATIENT';
+-- CreateTable
+CREATE TABLE "Doctor" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "specialization" TEXT NOT NULL,
+    "appointments" TEXT NOT NULL,
+
+    CONSTRAINT "Doctor_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "status" "UserStatus" NOT NULL DEFAULT 'ACTIVE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Hospital" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "address" TEXT,
+    "hospitalNumber" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Hospital_pkey" PRIMARY KEY ("id")
@@ -47,10 +54,19 @@ CREATE TABLE "HospitalUser" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
 CREATE INDEX "HospitalUser_userId_idx" ON "HospitalUser"("userId");
 
 -- CreateIndex
 CREATE INDEX "HospitalUser_hospitalId_idx" ON "HospitalUser"("hospitalId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "HospitalUser_userId_hospitalId_key" ON "HospitalUser"("userId", "hospitalId");
 
 -- AddForeignKey
 ALTER TABLE "HospitalUser" ADD CONSTRAINT "HospitalUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
