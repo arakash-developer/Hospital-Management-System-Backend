@@ -16,14 +16,56 @@ model Doctor {
 }
 
 
+enum Role {
+  ADMIN
+  DOCTOR
+  NURSE
+  PATIENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
 
 model User {
-  id        String   @id @default(uuid())
-  name      String?  // Optional
-  email     String  @unique
-  password  String
-  role      String
-  organization String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id           String              @id @default(uuid())
+  name         String
+  username     String?              @unique 
+  email        String              @unique
+  password     String
+  role         Role                @default(ADMIN)   // Global role (optional)
+  status       UserStatus          @default(ACTIVE)    // Active/inactive users
+  createdAt    DateTime            @default(now())
+  hospitals    HospitalUser[]      // Join table (many-to-many)
+}
+
+model Hospital {
+  id        String          @id @default(uuid())
+  name      String
+  address   String?
+  createdAt DateTime        @default(now())
+  users     HospitalUser[]  // Join table (many-to-many)
+}
+
+model HospitalUser {
+  id          String           @id @default(uuid())
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
+  hospital    Hospital         @relation(fields: [hospitalId], references: [id])
+  hospitalId  String
+  role        Role             // Per-hospital role
+  status      MembershipStatus @default(ACTIVE) // Per-hospital access control
+  createdAt   DateTime         @default(now())
+
+  @@index([userId])
+  @@index([hospitalId])
 }

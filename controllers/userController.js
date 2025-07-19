@@ -4,22 +4,24 @@ const bcrypt = require("bcryptjs");
 
 const createUser = async (req, res) => {
   try {
-    const { name, password, role, organization, email } = req.body;
+const { name, password, role,username, email, status } = req.body;
+
     // Validate required fields
 
-    if (!password || !role || !email) {
+    if (!password  || !email || !username) {
       return res
         .status(400)
-        .json({ error: "Password, role and email are required" });
+        .json({ error: "Password, email and username are required" });
     }
 
     const user = await prisma.user.create({
       data: {
         email,
+        username,
         password,
         role,
         name,
-        organization,
+        status,
       },
     });
 
