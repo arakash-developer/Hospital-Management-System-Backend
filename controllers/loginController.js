@@ -1,3 +1,5 @@
+require('dotenv').config();  // Ensure dotenv is required at the top
+
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
@@ -42,15 +44,26 @@ const login = async (req, res) => {
 
     // Create JWT token
     const payload = { userId: user.id, username: user.username, email: user.email };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }); // Expiration time is 1 hour
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     // Remove the password from user data before sending it
     const { password: _, ...userData } = user;
 
+    // Set the token as a cookie
+    res.cookie('token', token, {
+      httpOnly: true, // Prevent client-side JS from accessing the token
+      secure: process.env.NODE_ENV === 'production', // Set to true if using https
+      maxAge: 3600000, // 1 hour in milliseconds
+      sameSite: 'Strict', // Prevent CSRF attacks
+    });
+
+    // Return user data along with the token in the response body
     res.status(200).json({
       user: userData,
-      token, // Return the JWT token in the response
+      token, // Return the JWT token in the response body
     });
+
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Login failed" });
