@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
   try {
@@ -39,10 +40,16 @@ const login = async (req, res) => {
       });
     }
 
+    // Create JWT token
+    const payload = { userId: user.id, username: user.username, email: user.email };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }); // Expiration time is 1 hour
+
+    // Remove the password from user data before sending it
     const { password: _, ...userData } = user;
 
     res.status(200).json({
       user: userData,
+      token, // Return the JWT token in the response
     });
   } catch (error) {
     console.error("Login error:", error);
