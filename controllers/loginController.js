@@ -55,7 +55,7 @@ const login = async (req, res) => {
       httpOnly: true, // Prevent client-side JS from accessing the token
       secure: process.env.NODE_ENV === 'production', // Set to true if using https
       maxAge: 3600000, // 1 hour in milliseconds
-      sameSite: 'Strict', // Prevent CSRF attacks
+      sameSite: 'none', // Prevent CSRF attacks
     });
 
     // Return user data along with the token in the response body

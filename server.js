@@ -9,7 +9,25 @@ const loginRoute = require("./routes/loginRoute");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// CORS configuration to accept multiple origins
+const allowedOrigins = [
+  'http://localhost:5173',  // Vite frontend 1
+  'http://localhost:4173',  // Vite frontend 2
+  'https://bdhms.vercel.app' // Production frontend
+];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true  // Allow cookies to be sent with requests
+};
+
+app.use(cors(corsOptions));
 const prisma = new PrismaClient();
 app.use("/api/users", userRoutes);
 app.use("/api/doctors", doctorRoute);
