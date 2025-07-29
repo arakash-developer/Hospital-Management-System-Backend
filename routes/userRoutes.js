@@ -7,13 +7,13 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController");
-const authenticateToken = require("../middlewares/admin/adminAuthenticateToken");
+const adminAuthenticateToken = require("../middlewares/admin/adminAuthenticateToken");
 
 // Create a new user
 router.post("/", createUser);
 
 // Get all users
-router.get("/",authenticateToken,getUsers);
+router.get("/",adminAuthenticateToken,getUsers);
 
 // Get single user by ID
 router.get("/:id", getUserById);

@@ -47,10 +47,10 @@ const login = async (req, res) => {
 
     // Create JWT token with the role
     const payload = { 
-      userId: user.id, 
-      username: user.username, 
-      email: user.email, 
-      role: role // Include role in the JWT payload
+      userId: "1", 
+      username: "akash", 
+      email: "a", 
+      role: "role" // Include role in the JWT payload
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -70,7 +70,7 @@ const login = async (req, res) => {
     res.status(200).json({
       user: userData,
       token, // Return the JWT token in the response body
-    });
+    })
 
   } catch (error) {
     console.error("Login error:", error);
