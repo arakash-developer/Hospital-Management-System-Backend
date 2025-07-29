@@ -60,9 +60,7 @@ const login = async (req, res) => {
 
     // Set the token as a cookie
     res.cookie('token', token, {
-      httpOnly: false, // Prevent client-side JS from accessing the token
-      secure: false, // Set to true if using https
-      sameSite: 'none', // Prevent CSRF attacks
+      httpOnly: true, // Prevent client-side JS from accessing the token
     });
 
     // Return user data along with the token in the response body
