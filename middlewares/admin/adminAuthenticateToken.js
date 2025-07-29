@@ -16,7 +16,7 @@ const adminAuthenticateToken = (req, res, next) => {
     console.log(user);
 
     // Check if the user is an admin (you can modify this based on your role structure)
-    if (user.role !== "admin") {
+    if (user.role !== "ADMIN") {
       return res
         .status(403)
         .json({ error: "You do not have the required admin role" });

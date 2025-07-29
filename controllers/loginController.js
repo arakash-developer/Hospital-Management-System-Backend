@@ -47,10 +47,10 @@ const login = async (req, res) => {
 
     // Create JWT token with the role
     const payload = { 
-      userId: "1", 
-      username: "akash", 
-      email: "a", 
-      role: "role" // Include role in the JWT payload
+      userId: user.id, 
+      username: user.username, 
+      email: user.email, 
+      role: role // Include role in the JWT payload
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
