@@ -30,6 +30,7 @@ const corsOptions = {
   credentials: true  // Allow cookies to be sent with requests
 };
 
+
 app.use(cors(corsOptions));
 const prisma = new PrismaClient();
 app.use("/api/users", userRoutes);
