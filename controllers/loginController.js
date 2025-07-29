@@ -42,8 +42,16 @@ const login = async (req, res) => {
       });
     }
 
-    // Create JWT token
-    const payload = { userId: user.id, username: user.username, email: user.email };
+    // Add role to the payload (assuming the role is part of the user object)
+    const role = user.hospitals[0]?.role;  // Make sure this is how you store the user's role in the DB
+
+    // Create JWT token with the role
+    const payload = { 
+      userId: user.id, 
+      username: user.username, 
+      email: user.email, 
+      role: role // Include role in the JWT payload
+    };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
@@ -53,7 +61,7 @@ const login = async (req, res) => {
     // Set the token as a cookie
     res.cookie('token', token, {
       httpOnly: true, // Prevent client-side JS from accessing the token
-      secure: process.env.NODE_ENV === 'production', // Set to true if using https
+      secure: false, // Set to true if using https
       maxAge: 3600000, // 1 hour in milliseconds
       sameSite: 'none', // Prevent CSRF attacks
     });

@@ -1,6 +1,7 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
+const cookieParser = require("cookie-parser"); // Add this import
 const userRoutes = require("./routes/userRoutes");
 const doctorRoute = require("./routes/doctorRoute");
 const hospitalRoutes = require("./routes/hospitalRoute");
@@ -9,6 +10,8 @@ const loginRoute = require("./routes/loginRoute");
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser()); // This should be before any route handling
+
 // CORS configuration to accept multiple origins
 const allowedOrigins = [
   'http://localhost:5173',  // Vite frontend 1
