@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const adminAuthenticateToken = (req, res, next) => {
   // Check for the token in the Authorization header (Bearer token) or cookies
   const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; // Authorization: Bearer <token>
+console.log(token);
 
   if (!token) {
     return res.status(401).json({ error: "Authentication token is missing" });
