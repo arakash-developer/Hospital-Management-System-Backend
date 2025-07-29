@@ -53,7 +53,7 @@ const login = async (req, res) => {
       role: role // Include role in the JWT payload
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     // Remove the password from user data before sending it
     const { password: _, ...userData } = user;

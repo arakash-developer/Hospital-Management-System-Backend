@@ -14,10 +14,10 @@ console.log(token);
     if (err) {
       return res.status(403).json({ error: "Invalid or expired token" });
     }
-    console.log(user);
+    console.log(user.hospitals);
 
     // Check if the user is an admin (you can modify this based on your role structure)
-    if (user.role !== "ADMIN") {
+    if (user.hospitals[0].role !== "ADMIN") {
       return res
         .status(403)
         .json({ error: "You do not have the required admin role" });
