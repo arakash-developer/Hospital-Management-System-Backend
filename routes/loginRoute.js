@@ -26,11 +26,11 @@ module.exports = router;
  *               email:
  *                 type: string
  *                 format: email
- *                 example: user@example.com
+ *                 example: arakash.developer@gmail.com
  *               password:
  *                 type: string
  *                 format: password
- *                 example: password123
+ *                 example: akash
  *     responses:
  *       200:
  *         description: Login successful
