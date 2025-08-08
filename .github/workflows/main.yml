@@ -25,4 +25,4 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: /
-          exclude: node_modules,.git,.github
+          # Note: no 'exclude' here because we rely on .ftpignore
