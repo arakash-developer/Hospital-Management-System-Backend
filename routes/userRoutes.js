@@ -8,12 +8,34 @@ const {
   deleteUser,
 } = require("../controllers/userController");
 const adminAuthenticateToken = require("../middlewares/admin/adminAuthenticateToken");
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       201:
+ *         description: User created
+ *   get:
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: List of users
+ */
 
 // Create a new user
 router.post("/", createUser);
 
 // Get all users
-router.get("/",adminAuthenticateToken,getUsers);
+router.get("/", adminAuthenticateToken, getUsers);
 
 // Get single user by ID
 router.get("/:id", getUserById);
