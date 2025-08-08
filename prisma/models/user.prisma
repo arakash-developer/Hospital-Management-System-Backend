@@ -35,7 +35,7 @@ model Hospital {
   id        String          @id @default(uuid())
   name      String
   address   String?
-  hospitalNumber String
+  hospitalNumber String     @unique
   createdAt DateTime        @default(now())
   users     HospitalUser[]  // Join table (many-to-many)
 }
