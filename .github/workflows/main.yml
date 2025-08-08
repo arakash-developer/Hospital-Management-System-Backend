@@ -23,6 +23,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          local-dir: ./         # Upload all repo files, can exclude node_modules if you want
-          server-dir: /         # FTP destination root
-          exclude: node_modules
+          local-dir: ./
+          server-dir: /
+          exclude: node_modules,.git,.github
