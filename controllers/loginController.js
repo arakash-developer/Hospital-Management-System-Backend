@@ -1,4 +1,4 @@
-require('dotenv').config();  // Ensure dotenv is required at the top
+require("dotenv").config(); // Ensure dotenv is required at the top
 
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -43,14 +43,14 @@ const login = async (req, res) => {
     }
 
     // Add role to the payload (assuming the role is part of the user object)
-    const role = user.hospitals[0]?.role;  // Make sure this is how you store the user's role in the DB
+    const role = user.hospitals[0]?.role; // Make sure this is how you store the user's role in the DB
 
     // Create JWT token with the role
-    const payload = { 
-      userId: user.id, 
-      username: user.username, 
-      email: user.email, 
-      role: role // Include role in the JWT payload
+    const payload = {
+      userId: user.id,
+      username: user.username,
+      email: user.email,
+      role: role, // Include role in the JWT payload
     };
 
     const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -59,16 +59,18 @@ const login = async (req, res) => {
     const { password: _, ...userData } = user;
 
     // Set the token as a cookie
-    res.cookie('token', token, {
-      httpOnly: true, // Prevent client-side JS from accessing the token
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     // Return user data along with the token in the response body
     res.status(200).json({
       user: userData,
       token, // Return the JWT token in the response body
-    })
-
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Login failed" });
