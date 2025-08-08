@@ -18,6 +18,7 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(specs));
 // CORS configuration to accept multiple origins
 const allowedOrigins = [
   "http://localhost:5173", // Vite frontend 1
+  "http://localhost:5000", // Vite frontend 1
   "http://localhost:4173", // Vite frontend 2
   "https://bdhms.vercel.app", // Production frontend
 ];

@@ -8,30 +8,7 @@ const {
   deleteUser,
 } = require("../controllers/userController");
 const adminAuthenticateToken = require("../middlewares/admin/adminAuthenticateToken");
-/**
- * @swagger
- * /api/users:
- *   post:
- *     summary: Create a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *     responses:
- *       201:
- *         description: User created
- *   get:
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: List of users
- */
 
-// Create a new user
 router.post("/", createUser);
 
 // Get all users
@@ -47,3 +24,50 @@ router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 
 module.exports = router;
+
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - hospitalNumber
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "xyz"
+ *               username:
+ *                 type: string
+ *                 example: "xyz12345"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "john@example.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "strongPassword123"
+ *               status:
+ *                 type: string
+ *                 enum: ["ACTIVE", "INACTIVE"]
+ *                 example: "ACTIVE"
+ *     responses:
+ *       201:
+ *         description: User created
+ *   get:
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: List of users
+ */
+
+// Create a new user
