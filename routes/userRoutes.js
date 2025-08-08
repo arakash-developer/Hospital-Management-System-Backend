@@ -29,7 +29,8 @@ module.exports = router;
  * @swagger
  * /api/users:
  *   post:
- *     summary: Create a new user
+ *     summary: Create A New User
+ *     description: required( name / username / email / password / status ) default (none)
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -37,9 +38,11 @@ module.exports = router;
  *         application/json:
  *           schema:
  *             type: object
- *             required:
+ *             required:             # ✅ Add this
  *               - name
- *               - hospitalNumber
+ *               - username
+ *               - email
+ *               - password
  *             properties:
  *               name:
  *                 type: string
