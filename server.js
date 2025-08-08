@@ -7,6 +7,7 @@ const doctorRoute = require("./routes/doctorRoute");
 const hospitalRoutes = require("./routes/hospitalRoute");
 const hospitalUserRoutes = require("./routes/hospitalUserRoute");
 const loginRoute = require("./routes/loginRoute");
+const wellcomeRoute = require("./routes/wellcomeRoute");
 
 const app = express();
 app.use(express.json());
@@ -33,6 +34,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 const prisma = new PrismaClient();
+app.use("/api/wellcome", wellcomeRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/doctors", doctorRoute);
 app.use("/api/hospitals", hospitalRoutes);
