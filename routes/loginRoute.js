@@ -23,9 +23,9 @@ module.exports = router;
  *               - email
  *               - password
  *             properties:
- *               email:
+ *               identifier:
  *                 type: string
- *                 format: email
+ *                 format: string
  *                 example: arakash.developer@gmail.com
  *               password:
  *                 type: string
