@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 // Create a new hospital
 exports.createHospital = async (req, res) => {
   try {
-    const { name, address, hospitalNumber } = req.body;
+    const { name, address, hospitalNumber,hospitalImg } = req.body;
 
     // Check for required fields
     if (!name || !hospitalNumber) {
@@ -29,6 +29,7 @@ exports.createHospital = async (req, res) => {
         name,
         address,
         hospitalNumber,
+        hospitalImg,
       },
     });
 
