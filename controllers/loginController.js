@@ -69,7 +69,6 @@ const login = async (req, res) => {
     // Return user data along with the token in the response body
     res.status(200).json({
       user: userData,
-      token, // Return the JWT token in the response body
     });
   } catch (error) {
     console.error("Login error:", error);
