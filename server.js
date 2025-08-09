@@ -1,5 +1,5 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("./prisma/generated/clientPg");
 const cors = require("cors");
 const cookieParser = require("cookie-parser"); // Add this import
 const userRoutes = require("./routes/userRoutes");
