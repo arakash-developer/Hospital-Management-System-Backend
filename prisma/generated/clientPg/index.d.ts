@@ -3115,6 +3115,7 @@ export namespace Prisma {
     name: string | null
     address: string | null
     hospitalNumber: string | null
+    hospitalImg: string | null
     createdAt: Date | null
   }
 
@@ -3123,6 +3124,7 @@ export namespace Prisma {
     name: string | null
     address: string | null
     hospitalNumber: string | null
+    hospitalImg: string | null
     createdAt: Date | null
   }
 
@@ -3131,6 +3133,7 @@ export namespace Prisma {
     name: number
     address: number
     hospitalNumber: number
+    hospitalImg: number
     createdAt: number
     _all: number
   }
@@ -3141,6 +3144,7 @@ export namespace Prisma {
     name?: true
     address?: true
     hospitalNumber?: true
+    hospitalImg?: true
     createdAt?: true
   }
 
@@ -3149,6 +3153,7 @@ export namespace Prisma {
     name?: true
     address?: true
     hospitalNumber?: true
+    hospitalImg?: true
     createdAt?: true
   }
 
@@ -3157,6 +3162,7 @@ export namespace Prisma {
     name?: true
     address?: true
     hospitalNumber?: true
+    hospitalImg?: true
     createdAt?: true
     _all?: true
   }
@@ -3238,6 +3244,7 @@ export namespace Prisma {
     name: string
     address: string | null
     hospitalNumber: string
+    hospitalImg: string | null
     createdAt: Date
     _count: HospitalCountAggregateOutputType | null
     _min: HospitalMinAggregateOutputType | null
@@ -3263,6 +3270,7 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     hospitalNumber?: boolean
+    hospitalImg?: boolean
     createdAt?: boolean
     users?: boolean | Hospital$usersArgs<ExtArgs>
     _count?: boolean | HospitalCountOutputTypeDefaultArgs<ExtArgs>
@@ -3275,10 +3283,11 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     hospitalNumber?: boolean
+    hospitalImg?: boolean
     createdAt?: boolean
   }
 
-  export type HospitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "address" | "hospitalNumber" | "createdAt", ExtArgs["result"]["hospital"]>
+  export type HospitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "address" | "hospitalNumber" | "hospitalImg" | "createdAt", ExtArgs["result"]["hospital"]>
   export type HospitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Hospital$usersArgs<ExtArgs>
     _count?: boolean | HospitalCountOutputTypeDefaultArgs<ExtArgs>
@@ -3294,6 +3303,7 @@ export namespace Prisma {
       name: string
       address: string | null
       hospitalNumber: string
+      hospitalImg: string | null
       createdAt: Date
     }, ExtArgs["result"]["hospital"]>
     composites: {}
@@ -3669,6 +3679,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Hospital", 'String'>
     readonly address: FieldRef<"Hospital", 'String'>
     readonly hospitalNumber: FieldRef<"Hospital", 'String'>
+    readonly hospitalImg: FieldRef<"Hospital", 'String'>
     readonly createdAt: FieldRef<"Hospital", 'DateTime'>
   }
     
@@ -5041,6 +5052,7 @@ export namespace Prisma {
     name: 'name',
     address: 'address',
     hospitalNumber: 'hospitalNumber',
+    hospitalImg: 'hospitalImg',
     createdAt: 'createdAt'
   };
 
@@ -5099,7 +5111,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     address: 'address',
-    hospitalNumber: 'hospitalNumber'
+    hospitalNumber: 'hospitalNumber',
+    hospitalImg: 'hospitalImg'
   };
 
   export type HospitalOrderByRelevanceFieldEnum = (typeof HospitalOrderByRelevanceFieldEnum)[keyof typeof HospitalOrderByRelevanceFieldEnum]
@@ -5295,6 +5308,7 @@ export namespace Prisma {
     name?: StringFilter<"Hospital"> | string
     address?: StringNullableFilter<"Hospital"> | string | null
     hospitalNumber?: StringFilter<"Hospital"> | string
+    hospitalImg?: StringNullableFilter<"Hospital"> | string | null
     createdAt?: DateTimeFilter<"Hospital"> | Date | string
     users?: HospitalUserListRelationFilter
   }
@@ -5304,6 +5318,7 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrderInput | SortOrder
     hospitalNumber?: SortOrder
+    hospitalImg?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     users?: HospitalUserOrderByRelationAggregateInput
     _relevance?: HospitalOrderByRelevanceInput
@@ -5317,6 +5332,7 @@ export namespace Prisma {
     NOT?: HospitalWhereInput | HospitalWhereInput[]
     name?: StringFilter<"Hospital"> | string
     address?: StringNullableFilter<"Hospital"> | string | null
+    hospitalImg?: StringNullableFilter<"Hospital"> | string | null
     createdAt?: DateTimeFilter<"Hospital"> | Date | string
     users?: HospitalUserListRelationFilter
   }, "id" | "hospitalNumber">
@@ -5326,6 +5342,7 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrderInput | SortOrder
     hospitalNumber?: SortOrder
+    hospitalImg?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: HospitalCountOrderByAggregateInput
     _max?: HospitalMaxOrderByAggregateInput
@@ -5340,6 +5357,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Hospital"> | string
     address?: StringNullableWithAggregatesFilter<"Hospital"> | string | null
     hospitalNumber?: StringWithAggregatesFilter<"Hospital"> | string
+    hospitalImg?: StringNullableWithAggregatesFilter<"Hospital"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Hospital"> | Date | string
   }
 
@@ -5533,6 +5551,7 @@ export namespace Prisma {
     name: string
     address?: string | null
     hospitalNumber: string
+    hospitalImg?: string | null
     createdAt?: Date | string
     users?: HospitalUserCreateNestedManyWithoutHospitalInput
   }
@@ -5542,6 +5561,7 @@ export namespace Prisma {
     name: string
     address?: string | null
     hospitalNumber: string
+    hospitalImg?: string | null
     createdAt?: Date | string
     users?: HospitalUserUncheckedCreateNestedManyWithoutHospitalInput
   }
@@ -5551,6 +5571,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: HospitalUserUpdateManyWithoutHospitalNestedInput
   }
@@ -5560,6 +5581,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: HospitalUserUncheckedUpdateManyWithoutHospitalNestedInput
   }
@@ -5569,6 +5591,7 @@ export namespace Prisma {
     name: string
     address?: string | null
     hospitalNumber: string
+    hospitalImg?: string | null
     createdAt?: Date | string
   }
 
@@ -5577,6 +5600,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5585,6 +5609,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5863,6 +5888,7 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     hospitalNumber?: SortOrder
+    hospitalImg?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -5871,6 +5897,7 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     hospitalNumber?: SortOrder
+    hospitalImg?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -5879,6 +5906,7 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     hospitalNumber?: SortOrder
+    hospitalImg?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6443,6 +6471,7 @@ export namespace Prisma {
     name: string
     address?: string | null
     hospitalNumber: string
+    hospitalImg?: string | null
     createdAt?: Date | string
   }
 
@@ -6451,6 +6480,7 @@ export namespace Prisma {
     name: string
     address?: string | null
     hospitalNumber: string
+    hospitalImg?: string | null
     createdAt?: Date | string
   }
 
@@ -6506,6 +6536,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6514,6 +6545,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     hospitalNumber?: StringFieldUpdateOperationsInput | string
+    hospitalImg?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

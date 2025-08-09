@@ -142,6 +142,7 @@ exports.Prisma.HospitalScalarFieldEnum = {
   name: 'name',
   address: 'address',
   hospitalNumber: 'hospitalNumber',
+  hospitalImg: 'hospitalImg',
   createdAt: 'createdAt'
 };
 
@@ -182,7 +183,8 @@ exports.Prisma.HospitalOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
-  hospitalNumber: 'hospitalNumber'
+  hospitalNumber: 'hospitalNumber',
+  hospitalImg: 'hospitalImg'
 };
 
 exports.Prisma.HospitalUserOrderByRelevanceFieldEnum = {

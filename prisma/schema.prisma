@@ -58,6 +58,7 @@ model Hospital {
   name      String
   address   String?
   hospitalNumber String     @unique
+  hospitalImg String?
   createdAt DateTime        @default(now())
   users     HospitalUser[]  // Join table (many-to-many)
 }
