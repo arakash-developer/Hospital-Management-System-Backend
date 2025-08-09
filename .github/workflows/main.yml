@@ -14,7 +14,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Generate Prisma Client for Debian
+        run: npx prisma generate --binary-target native --binary-target debian-openssl-1.1.x
 
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -25,4 +28,4 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: /
-          # Note: no 'exclude' here because we rely on .ftpignore
+       
