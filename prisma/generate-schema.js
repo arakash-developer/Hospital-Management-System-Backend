@@ -3,7 +3,7 @@ const path = require("path");
 
 const HEADER = `generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-1.1.x"]
+  output   = "./generated/clientPg"
 }
 
 datasource db {

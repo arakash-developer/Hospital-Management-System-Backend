@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('../prisma/generated/clientPg')
 const prisma = new PrismaClient()
 
 // Create a new hospital
