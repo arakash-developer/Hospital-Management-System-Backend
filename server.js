@@ -19,6 +19,7 @@ const allowedOrigins = [
   "http://localhost:5000", // Vite frontend 1
   "http://localhost:4173", // Vite frontend 2
   "https://bdhms.vercel.app", // Production frontend
+  "https://hms.arakash.com", // Production frontend
 ];
 
 const corsOptions = {
