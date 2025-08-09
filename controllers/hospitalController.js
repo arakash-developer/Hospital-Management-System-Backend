@@ -21,7 +21,7 @@ exports.createHospital = async (req, res) => {
     if (existingHospital) {
       return res
         .status(409)
-        .json({ error: "Hospital with this hospital number already exists" });
+        .json({ error: "Hospital with this hospital number already exists!" });
     }
 
     const hospital = await prisma.hospital.create({
