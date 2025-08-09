@@ -1,3 +1,5 @@
+// for checking perpose 
+//2 database are need for mysql prisma run and main another one is shadow and create 2 database under the same user for migration ...thank you!!
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
