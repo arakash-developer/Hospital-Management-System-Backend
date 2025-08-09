@@ -21,8 +21,7 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run prisma:generate && npm run prisma:migrate && npm run start",
-    "postinstall": "npx prisma generate"
+    "build": "npm run prisma:generate && npm run prisma:migrate && npm run start"
   },
   "dependencies": {
     "@prisma/client": "^6.12.0",
