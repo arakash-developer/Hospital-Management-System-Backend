@@ -12,6 +12,7 @@ const wellcomeRoute = require("./routes/wellcomeRoute");
 const app = express();
 app.use(express.json());
 app.use(cookieParser()); // This should be before any route handling
+app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration to accept multiple origins
 const allowedOrigins = [
