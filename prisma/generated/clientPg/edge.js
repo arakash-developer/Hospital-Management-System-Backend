@@ -211,6 +211,14 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-1.1.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "linux-musl"
       }
     ],
     "previewFeatures": [],
@@ -228,6 +236,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -236,8 +245,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/clientPg\"\n}\n\ndatasource db {\n  provider          = \"mysql\"\n  url               = env(\"DATABASE_URL\")\n  shadowDatabaseUrl = env(\"SHADOW_DATABASE_URL\")\n}\n\nmodel Doctor {\n  id             Int    @id @default(autoincrement())\n  name           String\n  specialization String\n  appointments   String\n}\n\nenum Role {\n  ADMIN\n  DOCTOR\n  NURSE\n  PATIENT\n  GUEST // <-- now safe to use\n}\n\nenum UserStatus {\n  ACTIVE\n  INACTIVE\n  SUSPENDED\n  DELETED\n}\n\nenum MembershipStatus {\n  ACTIVE\n  INACTIVE\n  BLOCKED\n}\n\nmodel User {\n  id        String         @id @default(uuid())\n  name      String\n  username  String         @unique\n  email     String         @unique\n  password  String\n  status    UserStatus     @default(ACTIVE) // Active/inactive users\n  createdAt DateTime       @default(now())\n  hospitals HospitalUser[] // Join table (many-to-many)\n}\n\nmodel Hospital {\n  id             String         @id @default(uuid())\n  name           String\n  address        String?\n  hospitalNumber String         @unique\n  createdAt      DateTime       @default(now())\n  users          HospitalUser[] // Join table (many-to-many)\n}\n\nmodel HospitalUser {\n  id         String           @id @default(uuid())\n  user       User             @relation(fields: [userId], references: [id])\n  userId     String\n  hospital   Hospital         @relation(fields: [hospitalId], references: [id])\n  hospitalId String\n  role       Role\n  status     MembershipStatus @default(ACTIVE)\n  createdAt  DateTime         @default(now())\n\n  @@unique([userId, hospitalId])\n  @@index([userId])\n  @@index([hospitalId])\n}\n",
-  "inlineSchemaHash": "fcbd4ef00492bba62708219ab82086d4d3e48d43c7c3d376d9d2381b868cbf25",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/clientPg\"\n  binaryTargets = [\"native\", \"debian-openssl-1.1.x\", \"linux-musl\"]\n}\n\ndatasource db {\n  provider          = \"mysql\"\n  url               = env(\"DATABASE_URL\")\n  shadowDatabaseUrl = env(\"SHADOW_DATABASE_URL\")\n}\n\nmodel Doctor {\n  id             Int    @id @default(autoincrement())\n  name           String\n  specialization String\n  appointments   String\n}\n\nenum Role {\n  ADMIN\n  DOCTOR\n  NURSE\n  PATIENT\n  GUEST // <-- now safe to use\n}\n\nenum UserStatus {\n  ACTIVE\n  INACTIVE\n  SUSPENDED\n  DELETED\n}\n\nenum MembershipStatus {\n  ACTIVE\n  INACTIVE\n  BLOCKED\n}\n\nmodel User {\n  id        String         @id @default(uuid())\n  name      String\n  username  String         @unique\n  email     String         @unique\n  password  String\n  status    UserStatus     @default(ACTIVE) // Active/inactive users\n  createdAt DateTime       @default(now())\n  hospitals HospitalUser[] // Join table (many-to-many)\n}\n\nmodel Hospital {\n  id             String         @id @default(uuid())\n  name           String\n  address        String?\n  hospitalNumber String         @unique\n  createdAt      DateTime       @default(now())\n  users          HospitalUser[] // Join table (many-to-many)\n}\n\nmodel HospitalUser {\n  id         String           @id @default(uuid())\n  user       User             @relation(fields: [userId], references: [id])\n  userId     String\n  hospital   Hospital         @relation(fields: [hospitalId], references: [id])\n  hospitalId String\n  role       Role\n  status     MembershipStatus @default(ACTIVE)\n  createdAt  DateTime         @default(now())\n\n  @@unique([userId, hospitalId])\n  @@index([userId])\n  @@index([hospitalId])\n}\n",
+  "inlineSchemaHash": "fba43fc345b360539d50f042f475b3ba9a3725d41b2aca5a375ce21ea61cb8bf",
   "copyEngine": true
 }
 config.dirname = '/'
