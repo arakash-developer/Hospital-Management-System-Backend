@@ -18,6 +18,7 @@
     "prisma:build": "node prisma/generate-schema.js",
     "prisma:generate": "npm run prisma:build && prisma generate",
     "prisma:migrate": "npm run prisma:build && prisma migrate dev",
+    "prisma:reset": "npx prisma migrate reset --force",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
