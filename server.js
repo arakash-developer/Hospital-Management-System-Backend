@@ -1,18 +1,18 @@
 const express = require("express");
-const { PrismaClient } = require("./prisma/generated/clientPg");
+// const { PrismaClient } = require("./prisma/generated/clientPg");
 const cors = require("cors");
 const cookieParser = require("cookie-parser"); // Add this import
 const userRoutes = require("./routes/userRoutes");
-const doctorRoute = require("./routes/doctorRoute");
-const hospitalRoutes = require("./routes/hospitalRoute");
-const hospitalUserRoutes = require("./routes/hospitalUserRoute");
-const loginRoute = require("./routes/loginRoute");
+// const doctorRoute = require("./routes/doctorRoute");
+// const hospitalRoutes = require("./routes/hospitalRoute");
+// const hospitalUserRoutes = require("./routes/hospitalUserRoute");
+// const loginRoute = require("./routes/loginRoute");
 const wellcomeRoute = require("./routes/wellcomeRoute");
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // CORS configuration to accept multiple origins
 const allowedOrigins = [
@@ -35,15 +35,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 app.use("/api/wellcome", wellcomeRoute);
 app.use("/api/users", userRoutes);
-app.use("/api/doctors", doctorRoute);
-app.use("/api/hospitals", hospitalRoutes);
-app.use("/api/hospital-users", hospitalUserRoutes);
-app.use("/api/login", loginRoute);
+// app.use("/api/doctors", doctorRoute);
+// app.use("/api/hospitals", hospitalRoutes);
+// app.use("/api/hospital-users", hospitalUserRoutes);
+// app.use("/api/login", loginRoute);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

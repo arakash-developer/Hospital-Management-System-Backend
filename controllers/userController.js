@@ -1,22 +1,33 @@
-const { PrismaClient } = require("../prisma/generated/clientPg");
-const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
+const User = require("../models/User");
+
+const isProd =
+  process.env.RUNNING === "production" || process.env.NODE_ENV === "production";
 
 // Create User
 const createUser = async (req, res) => {
   try {
-    const { name, password, role, username, email, status } = req.body;
-
-    if (!password || !email || !username) {
-      return res
-        .status(400)
-        .json({ error: "Password, email, and username are required" });
+    // guard against undefined body to avoid destructuring error
+    if (req.body === undefined) {
+      console.error(
+        "Create user error: req.body is undefined. Ensure express.json() middleware is enabled."
+      );
+      return res.status(400).json({
+        error:
+          "Request body missing. Enable body parsing middleware (e.g. app.use(express.json())).",
+      });
     }
 
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { username }]
-      }
+    const { email, username, password, role } = req.body;
+
+    if (!email || !username || !password || !role) {
+      return res
+        .status(400)
+        .json({ error: "email, username, password and role are required" });
+    }
+
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }],
     });
 
     if (existingUser) {
@@ -27,45 +38,35 @@ const createUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        username,
-        password: hashedPassword,
-        status,
-        hospitals: {
-          create: role && req.body.hospitalId
-            ? [{
-                hospitalId: req.body.hospitalId,
-                role
-              }]
-            : []
-        }
-      }
+    const user = new User({
+      email,
+      username,
+      password: hashedPassword,
+      role,
     });
 
-    res.status(201).json(user);
+    await user.save();
+    const userObj = user.toObject();
+    delete userObj.password;
+    res.status(201).json(userObj);
   } catch (error) {
     console.error("Create user error:", error);
-    res.status(500).json({ error: "Failed to create user" });
+    const payload = { error: isProd ? "Failed to create user" : error.message };
+    if (!isProd) payload.stack = error.stack;
+    res.status(500).json(payload);
   }
 };
 
 // Get All Users
 const getUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany({
-      include: {
-        hospitals: {
-          include: { hospital: true }
-        }
-      }
-    });
+    const users = await User.find().select("-password").lean();
     res.json(users);
   } catch (error) {
     console.error("Get users error:", error);
-    res.status(500).json({ error: "Failed to fetch users" });
+    const payload = { error: isProd ? "Failed to fetch users" : error.message };
+    if (!isProd) payload.stack = error.stack;
+    res.status(500).json(payload);
   }
 };
 
@@ -73,14 +74,7 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: {
-        hospitals: {
-          include: { hospital: true }
-        }
-      }
-    });
+    const user = await User.findById(id).select("-password").lean();
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -89,7 +83,10 @@ const getUserById = async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error("Get user by ID error:", error);
-    res.status(500).json({ error: "Failed to fetch user" });
+    const payload = { error: isProd ? "Failed to fetch user" : error.message };
+    if (!isProd) payload.stack = error.stack;
+    // keep 400 for invalid id patterns where applicable
+    res.status(400).json(payload);
   }
 };
 
@@ -97,28 +94,42 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, username, password, status } = req.body;
+
+    // guard against undefined body to avoid destructuring error
+    if (req.body === undefined) {
+      console.error(
+        "Update user error: req.body is undefined. Ensure express.json() middleware is enabled."
+      );
+      return res.status(400).json({
+        error:
+          "Request body missing. Enable body parsing middleware (e.g. app.use(express.json())).",
+      });
+    }
+
+    const { email, username, password, role } = req.body;
 
     const updateData = {
-      name,
-      email,
-      username,
-      status
+      ...(email !== undefined && { email }),
+      ...(username !== undefined && { username }),
+      ...(role !== undefined && { role }),
     };
 
     if (password) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
-    const user = await prisma.user.update({
-      where: { id },
-      data: updateData
-    });
+    const user = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
 
+    if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (error) {
     console.error("Update user error:", error);
-    res.status(500).json({ error: "Failed to update user" });
+    const payload = { error: isProd ? "Failed to update user" : error.message };
+    if (!isProd) payload.stack = error.stack;
+    res.status(400).json(payload);
   }
 };
 
@@ -127,13 +138,15 @@ const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await prisma.hospitalUser.deleteMany({ where: { userId: id } }); // Clean up join table
-    await prisma.user.delete({ where: { id } });
+    const user = await User.findByIdAndDelete(id).select("-password");
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.json({ message: "User deleted successfully" });
+    res.json({ message: "User deleted successfully", user });
   } catch (error) {
     console.error("Delete user error:", error);
-    res.status(500).json({ error: "Failed to delete user" });
+    const payload = { error: isProd ? "Failed to delete user" : error.message };
+    if (!isProd) payload.stack = error.stack;
+    res.status(400).json(payload);
   }
 };
 
@@ -142,5 +155,5 @@ module.exports = {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
 };
