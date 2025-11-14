@@ -29,10 +29,13 @@ async function createUser(req, res) {
   try {
     const { name, email, password, role } = req.body;
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "name, email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "name, email and password are required" });
     }
     const existing = await User.findOne({ email });
-    if (existing) return res.status(409).json({ message: "Email already in use" });
+    if (existing)
+      return res.status(409).json({ message: "Email already in use" });
 
     const user = new User({ name, email, password, role });
     await user.save();
@@ -51,7 +54,9 @@ async function updateUser(req, res) {
     const { id } = req.params;
     const updates = { ...req.body };
     delete updates.password; // do not allow password updates here (or handle hashing)
-    const user = await User.findByIdAndUpdate(id, updates, { new: true }).select("-password");
+    const user = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+    }).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
     return res.json(user);
   } catch (err) {
