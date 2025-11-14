@@ -30,8 +30,8 @@ const {
  *       200:
  *         description: List of doctors
  */
-router.post("/", createDoctor);
 router.get("/", getDoctors);
+router.post("/", createDoctor);
 router.get("/:id", getDoctorById);
 router.put("/:id", updateDoctor);
 router.delete("/:id", deleteDoctor);

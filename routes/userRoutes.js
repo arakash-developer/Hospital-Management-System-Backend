@@ -7,20 +7,12 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController");
-const adminAuthenticateToken = require("../middlewares/admin/adminAuthenticateToken");
 
+// Ensure we pass function references (no parentheses)
+router.get("/", getUsers);
 router.post("/", createUser);
-
-// Get all users
-router.get("/", adminAuthenticateToken, getUsers);
-
-// Get single user by ID
 router.get("/:id", getUserById);
-
-// Update user by ID
 router.put("/:id", updateUser);
-
-// Delete user by ID
 router.delete("/:id", deleteUser);
 
 module.exports = router;
