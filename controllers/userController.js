@@ -7,23 +7,32 @@ const isProd =
 // Create User
 const createUser = async (req, res) => {
   try {
-    // guard against undefined body to avoid destructuring error
-    if (req.body === undefined) {
+    // guard against undefined or empty body to avoid destructuring error
+    const contentType = (req.headers && req.headers["content-type"]) || "";
+    const bodyEmpty =
+      req.body === undefined ||
+      (typeof req.body === "object" && Object.keys(req.body).length === 0);
+
+    if (bodyEmpty) {
       console.error(
-        "Create user error: req.body is undefined. Ensure express.json() middleware is enabled."
+        "Create user error: req.body missing or empty. Ensure body-parsing middleware is enabled and client sends correct Content-Type."
       );
       return res.status(400).json({
-        error:
-          "Request body missing. Enable body parsing middleware (e.g. app.use(express.json())).",
+        error: "Request body missing or empty.",
+        hint: contentType.includes("application/json")
+          ? "If Content-Type is application/json, check that the JSON is well-formed (malformed JSON will produce an empty body). Also ensure app.use(express.json()) is enabled."
+          : "Enable body parsing (app.use(express.json()) / app.use(express.urlencoded(...))) and set the appropriate Content-Type header.",
+        contentType: contentType || "not provided",
       });
     }
 
     const { email, username, password, role } = req.body;
 
-    if (!email || !username || !password || !role) {
+    // require email/username/password; role is optional
+    if (!email || !username || !password) {
       return res
         .status(400)
-        .json({ error: "email, username, password and role are required" });
+        .json({ error: "email, username and password are required" });
     }
 
     const existingUser = await User.findOne({
@@ -42,7 +51,7 @@ const createUser = async (req, res) => {
       email,
       username,
       password: hashedPassword,
-      role,
+      role: role || "user",
     });
 
     await user.save();
@@ -95,14 +104,19 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // guard against undefined body to avoid destructuring error
-    if (req.body === undefined) {
+    // guard against undefined or empty body to avoid destructuring error
+    const contentType = req.headers && req.headers["content-type"];
+    if (
+      req.body === undefined ||
+      (typeof req.body === "object" && Object.keys(req.body).length === 0)
+    ) {
       console.error(
-        "Update user error: req.body is undefined. Ensure express.json() middleware is enabled."
+        "Update user error: req.body missing or empty. Ensure body-parsing middleware is enabled and client sends correct Content-Type."
       );
       return res.status(400).json({
-        error:
-          "Request body missing. Enable body parsing middleware (e.g. app.use(express.json())).",
+        error: "Request body missing or empty.",
+        hint: "Enable body parsing (app.use(express.json()) / app.use(express.urlencoded(...))) and set Content-Type header.",
+        contentType: contentType || "not provided",
       });
     }
 

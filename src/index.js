@@ -6,6 +6,8 @@ const app = express();
 
 // add JSON body parsing and user routes
 app.use(express.json());
+// add urlencoded parser to support form submissions and other content-types
+app.use(express.urlencoded({ extended: true }));
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
