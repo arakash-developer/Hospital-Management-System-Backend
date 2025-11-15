@@ -6,8 +6,9 @@ const {
   updateDepartment,
   deleteDepartment,
 } = require("../controllers/department");
+const isReceiption = require("../middlewares/isreceiption");
 
-router.post("/", departmentCreate);
+router.post("/", isReceiption, departmentCreate);
 router.get("/", getDepartments);
 router.put("/:id", updateDepartment);
 router.delete("/:id", deleteDepartment);

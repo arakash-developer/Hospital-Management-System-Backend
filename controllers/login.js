@@ -29,7 +29,7 @@ const login = async (req, res) => {
       role: foundUser.role,
       name: foundUser.name,
     };
-    const secret = process.env.JWT_SECRET || "change_this_jwt_secret";
+    const secret = process.env.JWT_SECRET;
     const token = jwt.sign(payload, secret);
 
     return res.status(200).json({
