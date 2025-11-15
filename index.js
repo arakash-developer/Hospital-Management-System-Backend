@@ -2,10 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const wellcomeRoutes = require("./routes/wellcome");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const wellcomeRoutes = require("./routes/wellcome");
+const userRoutes = require("./routes/users");
+
 app.use("/api/wellcome", wellcomeRoutes);
+app.use("/api/users", userRoutes);
 
 // Connect to MongoDB using .env value
 mongoose
