@@ -1,0 +1,100 @@
+const ItemTest = require("../models/test");
+const ItemCategory = require("../models/category");
+
+// CREATE TEST
+const createTest = async (req, res) => {
+  try {
+    const { name, price, category } = req.body;
+
+    const categoryExists = await ItemCategory.findById(category);
+    if (!categoryExists) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    const test = new ItemTest({ name, price, category });
+    const saved = await test.save();
+
+    res.status(201).json({
+      message: "Test created successfully",
+      testId: saved._id,
+    });
+  } catch (error) {
+    console.error("Error creating test:", error);
+    res.status(500).json({ message: "Failed to create test" });
+  }
+};
+
+// GET ALL TESTS
+const getTests = async (req, res) => {
+  try {
+    const tests = await ItemTest.find().populate("category");
+    res.status(200).json(tests);
+  } catch (error) {
+    console.error("Error fetching tests:", error);
+    res.status(500).json({ message: "Failed to fetch tests" });
+  }
+};
+
+// GET TESTS BY CATEGORY
+const getTestsByCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const tests = await ItemTest.find({ category: categoryId });
+
+    res.status(200).json(tests);
+  } catch (error) {
+    console.error("Error fetching tests by category:", error);
+    res.status(500).json({ message: "Failed to fetch tests for category" });
+  }
+};
+
+// UPDATE TEST
+const updateTest = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, price } = req.body;
+
+    const updated = await ItemTest.findByIdAndUpdate(
+      id,
+      { name, price },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Test not found" });
+    }
+
+    res.status(200).json({
+      message: "Test updated successfully",
+      test: updated,
+    });
+  } catch (error) {
+    console.error("Error updating test:", error);
+    res.status(500).json({ message: "Failed to update test" });
+  }
+};
+
+// DELETE TEST
+const deleteTest = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = await ItemTest.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Test not found" });
+    }
+
+    res.status(200).json({ message: "Test deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting test:", error);
+    res.status(500).json({ message: "Failed to delete test" });
+  }
+};
+
+module.exports = {
+  createTest,
+  getTests,
+  getTestsByCategory,
+  updateTest,
+  deleteTest,
+};
