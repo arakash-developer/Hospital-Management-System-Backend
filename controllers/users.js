@@ -1,12 +1,15 @@
+const bcrypt = require("bcrypt");
 const user = require("../models/user");
+const saltRounds = 10;
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, username, password, role } = req.body;
-
-    if (Object.keys(req.body).length === 0) {
+    const body = req.body || {};
+    if (Object.keys(body).length === 0) {
       return res.status(400).json({ message: "Request body is required" });
     }
+
+    const { name, email, username, password, role } = body;
 
     if (!name || !email || !username || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
@@ -23,13 +26,16 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "Username already exists" });
     }
 
-    const newUser = new user({ name, email, username, password, role });
+    // Hash the password (promise-based) and save the user
+    const hash = await bcrypt.hash(password, saltRounds);
+    const newUser = new user({ name, email, username, password: hash, role });
     await newUser.save();
+
     return res
       .status(201)
       .json({ message: "User created successfully", userId: newUser._id });
   } catch (err) {
-    console.error(err);
+    console.error("createUser error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };
