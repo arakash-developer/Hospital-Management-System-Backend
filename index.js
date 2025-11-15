@@ -1,9 +1,21 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// allow all CORS requests
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
 const wellcomeRoutes = require("./routes/wellcome");
 const userRoutes = require("./routes/users");
 const loginRoutes = require("./routes/login");
