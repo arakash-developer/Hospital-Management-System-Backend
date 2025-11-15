@@ -19,10 +19,12 @@ app.use(
 const wellcomeRoutes = require("./routes/wellcome");
 const userRoutes = require("./routes/users");
 const loginRoutes = require("./routes/login");
+const departmentRoutes = require("./routes/department");
 
 app.use("/api/wellcome", wellcomeRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/login", loginRoutes);
+app.use("/api/department", departmentRoutes);
 
 // Connect to MongoDB using .env value
 mongoose
