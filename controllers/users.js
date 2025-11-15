@@ -2,14 +2,13 @@ const user = require("../models/user");
 
 const createUser = async (req, res) => {
   try {
-    const body = req.body || {};
-    const { name, email, username, password, role } = body;
+    const { name, email, username, password, role } = req.body;
 
-    if (Object.keys(body).length === 0) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "Request body is required" });
     }
 
-    if (!name || !email || !username || !password) {
+    if (!name || !email || !username || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
