@@ -34,7 +34,10 @@ const login = async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful",
-      token, // JWT returned to client
+      token: {
+        tok: token,
+        role: foundUser.role,
+      }, // JWT returned to client
     });
   } catch (err) {
     return res.status(500).json({ message: "Internal server error" });
