@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const user = require("../models/user");
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -21,13 +22,19 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
+    // create JWT
+    const payload = {
+      userId: foundUser._id,
+      username: foundUser.username,
+      role: foundUser.role,
+      name: foundUser.name,
+    };
+    const secret = process.env.JWT_SECRET || "change_this_jwt_secret";
+    const token = jwt.sign(payload, secret);
+
     return res.status(200).json({
       message: "Login successful",
-      userId: foundUser._id,
-      name: foundUser.name,
-      email: foundUser.email,
-      role: foundUser.role,
-      username: foundUser.username,
+      token, // JWT returned to client
     });
   } catch (err) {
     return res.status(500).json({ message: "Internal server error" });
