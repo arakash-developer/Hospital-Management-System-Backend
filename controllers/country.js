@@ -26,7 +26,7 @@ const createCountry = async (req, res) => {
 // GET ALL COUNTRIES
 const getCountries = async (req, res) => {
   try {
-    const data = await Country.find().sort({ name: 1 });
+    const data = await Country.find().sort({ _id: -1 });
     res.status(200).json(data);
   } catch (error) {
     console.error("Error fetching countries:", error);
