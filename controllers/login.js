@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const user = require("../models/user");
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -6,14 +7,21 @@ const login = async (req, res) => {
       .status(400)
       .json({ message: "Username and password are required" });
   }
-  // Add your authentication logic here
-  const foundUser = await user.findOne({ username, password });
-  if (!foundUser) {
-    return res.status(401).json({ message: "Invalid username or password" });
-  }
-  return res
-    .status(200)
-    .json({
+
+  try {
+    // find user by username only
+    const foundUser = await user.findOne({ username });
+    if (!foundUser) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    // compare provided password with hashed password from DB
+    const match = await bcrypt.compare(password, foundUser.password);
+    if (!match) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    return res.status(200).json({
       message: "Login successful",
       userId: foundUser._id,
       name: foundUser.name,
@@ -21,6 +29,9 @@ const login = async (req, res) => {
       role: foundUser.role,
       username: foundUser.username,
     });
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 module.exports = {
