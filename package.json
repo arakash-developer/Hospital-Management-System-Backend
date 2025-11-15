@@ -1,0 +1,25 @@
+{
+  "name": "hospital-management-system-backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/arakash-developer/Hospital-Management-System-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/arakash-developer/Hospital-Management-System-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arakash-developer/Hospital-Management-System-Backend.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.4"
+  }
+}
