@@ -5,6 +5,11 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  carried: {
+    type: String,
+    required: true,
+  },
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",

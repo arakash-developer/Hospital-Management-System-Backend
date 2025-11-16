@@ -4,7 +4,7 @@ const Department = require("../models/department");
 // CREATE CATEGORY
 const createCategory = async (req, res) => {
   try {
-    const { name, department } = req.body;
+    const { name, department, carried } = req.body;
 
     // Check Department exists
     const deptExists = await Department.findById(department);
@@ -12,7 +12,7 @@ const createCategory = async (req, res) => {
       return res.status(404).json({ message: "Department not found" });
     }
 
-    const category = new ItemCategory({ name, department });
+    const category = new ItemCategory({ name, department, carried });
     const saved = await category.save();
 
     res.status(201).json({
@@ -42,11 +42,11 @@ const getCategories = async (req, res) => {
 const updateCategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name } = req.body;
+    const { name, carried } = req.body;
 
     const updated = await ItemCategory.findByIdAndUpdate(
       id,
-      { name },
+      { name, carried },
       { new: true }
     );
 
