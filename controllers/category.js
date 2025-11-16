@@ -28,7 +28,9 @@ const createCategory = async (req, res) => {
 // GET ALL CATEGORIES
 const getCategories = async (req, res) => {
   try {
-    const categories = await ItemCategory.find().populate("department");
+    const categories = await ItemCategory.find()
+      .populate("department")
+      .sort({ _id: -1 });
     res.status(200).json(categories);
   } catch (error) {
     console.error("Error fetching categories:", error);
