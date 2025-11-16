@@ -19,7 +19,7 @@ const departmentCreate = async (req, res) => {
 
 const getDepartments = async (req, res) => {
   try {
-    const departments = await Department.find();
+    const departments = await Department.find().sort({ _id: -1 });
     return res.status(200).json(departments);
   } catch (error) {
     console.error("Error fetching departments:", error);
@@ -56,7 +56,6 @@ const updateDepartment = async (req, res) => {
   }
 };
 
-
 const deleteDepartment = async (req, res) => {
   try {
     const deptId = req.params.id;
@@ -72,7 +71,6 @@ const deleteDepartment = async (req, res) => {
     return res.status(500).json({ message: "Failed to delete Department" });
   }
 };
-
 
 module.exports = {
   departmentCreate,
