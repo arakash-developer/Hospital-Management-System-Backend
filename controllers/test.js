@@ -27,7 +27,7 @@ const createTest = async (req, res) => {
 // GET ALL TESTS
 const getTests = async (req, res) => {
   try {
-    const tests = await ItemTest.find().populate("category");
+    const tests = await ItemTest.find().populate("category").sort({_id: -1});
     res.status(200).json(tests);
   } catch (error) {
     console.error("Error fetching tests:", error);
