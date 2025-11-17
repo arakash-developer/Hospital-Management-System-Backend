@@ -15,15 +15,15 @@ const patientRegistrationSchema = new mongoose.Schema({
     },
   ],
   procedurecalculation: [
-  {
-    name : { type: String, required: true },
-    total : { type: Number, required: true },
-    discount : { type: Number, required: true },
-    discounted : { type: Number, required: true },
-    paid : { type: Number, required: true },
-    due : { type: Number, required: true
-  }
-],
+    {
+      name: { type: String, required: true },
+      total: { type: Number, required: true },
+      discount: { type: Number, required: true },
+      discounted: { type: Number, required: true },
+      paid: { type: Number, required: true },
+      due: { type: Number, required: true },
+    },
+  ],
   totalCharge: { type: Number, default: 0 },
   totalDiscount: { type: Number, default: 0 },
   totalDiscounted: { type: Number, default: 0 },
