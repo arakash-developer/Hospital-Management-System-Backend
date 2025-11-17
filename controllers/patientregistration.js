@@ -5,7 +5,9 @@ const createPatient = async (req, res) => {
   try {
     const patient = new PatientRegistration(req.body);
     await patient.save();
-    res.status(201).json({ message: "Patient registered successfully", patient });
+    res
+      .status(201)
+      .json({ message: "Patient registered successfully", patient });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creating patient", error });
@@ -17,6 +19,8 @@ const getAllPatients = async (req, res) => {
   try {
     const patients = await PatientRegistration.find()
       .populate("refDoctor") // optional: populate doctor details
+      .sort({ _id: -1 }) // sort by _id descending (latest first)
+
       .exec();
     res.status(200).json(patients);
   } catch (error) {
