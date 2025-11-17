@@ -43,6 +43,25 @@ const getPatientById = async (req, res) => {
   }
 };
 
+// GET single patient by patientid
+const getPatientByPatientId = async (req, res) => {
+  try {
+    const patient = await PatientRegistration.findOne({ patientid: req.params.id })
+      .populate("refDoctor")
+      .exec();
+
+    if (!patient)
+      return res.status(404).json({ message: "Patient not found" });
+
+    res.status(200).json(patient);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching patient", error });
+  }
+};
+
+
+
 // DELETE patient by ID
 const deletePatient = async (req, res) => {
   try {
@@ -60,4 +79,5 @@ module.exports = {
   getAllPatients,
   getPatientById,
   deletePatient,
+  getPatientByPatientId,
 };
