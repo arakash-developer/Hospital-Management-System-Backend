@@ -15,19 +15,38 @@ const createPatient = async (req, res) => {
 };
 
 // GET all patients
+// GET all patients with pagination
 const getAllPatients = async (req, res) => {
   try {
+    // Get page and limit from query params, default: page=1, limit=20
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 30;
+    const skip = (page - 1) * limit;
+
+    // Fetch patients with pagination
     const patients = await PatientRegistration.find()
       .populate("refDoctor") // optional: populate doctor details
-      .sort({ _id: -1 }) // sort by _id descending (latest first)
-
+      .sort({ _id: -1 }) // latest first
+      .skip(skip)
+      .limit(limit)
       .exec();
-    res.status(200).json(patients);
+
+    // Get total count for frontend pagination
+    const totalPatients = await PatientRegistration.countDocuments();
+
+    res.status(200).json({
+      page,
+      limit,
+      totalPages: Math.ceil(totalPatients / limit),
+      totalPatients,
+      data: patients,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error fetching patients", error });
   }
 };
+
 
 // GET single patient by ID
 const getPatientById = async (req, res) => {
