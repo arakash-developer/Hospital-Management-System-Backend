@@ -4,14 +4,30 @@ const ItemCategory = require("../models/category");
 // CREATE TEST
 const createTest = async (req, res) => {
   try {
-    const { testname, unittest, normalrange, tablename, tableidfield, testcharge, category } = req.body;
+    const {
+      testname,
+      unittest,
+      normalrange,
+      tablename,
+      tableidfield,
+      testcharge,
+      category,
+    } = req.body;
 
     const categoryExists = await ItemCategory.findById(category);
     if (!categoryExists) {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    const test = new ItemTest({ testname, unittest, normalrange, tablename, tableidfield, testcharge, category });
+    const test = new ItemTest({
+      testname,
+      unittest,
+      normalrange,
+      tablename,
+      tableidfield,
+      testcharge,
+      category,
+    });
     const saved = await test.save();
 
     res.status(201).json({
@@ -27,17 +43,22 @@ const createTest = async (req, res) => {
 // GET ALL TESTS
 const getTests = async (req, res) => {
   try {
-    const tests = await ItemTest.find().populate("category").sort({_id: -1});
+    const tests = await ItemTest.find()
+      .populate({
+        path: "category",
+        populate: { path: "department" }, // <-- populate department inside category
+      })
+      .sort({ _id: -1 });
+
     res.status(200).json(tests);
   } catch (error) {
     console.error("Error fetching tests:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Failed to fetch tests",
-      error: error.message
+      error: error.message,
     });
   }
 };
-
 
 // GET TESTS BY CATEGORY
 const getTestsByCategory = async (req, res) => {
