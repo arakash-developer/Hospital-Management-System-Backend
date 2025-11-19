@@ -37,6 +37,7 @@ app.use("/api/country", countryRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/departmentorderprice", departmentorderpriceRoutes);
 app.use("/api/patientregistration", PatientRegistration);
+app.use("/api/report", require("./routes/report"));
 
 // Connect to MongoDB using .env value
 mongoose
