@@ -14,11 +14,13 @@ const testSchema = new mongoose.Schema({
     required: true,
   },
   tablename: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Table",
     required: true,
   },
   tableidfield: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "TableIdField",
     required: true,
   },
   testcharge: {
