@@ -13,7 +13,7 @@ const testSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tablename: {
+  table: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Table",
     required: true,

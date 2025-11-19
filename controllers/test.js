@@ -8,7 +8,7 @@ const createTest = async (req, res) => {
       testname,
       unittest,
       normalrange,
-      tablename,
+      table,
       tableidfield,
       testcharge,
       category,
@@ -23,7 +23,7 @@ const createTest = async (req, res) => {
       testname,
       unittest,
       normalrange,
-      tablename,
+      table,
       tableidfield,
       testcharge,
       category,
@@ -44,6 +44,8 @@ const createTest = async (req, res) => {
 const getTests = async (req, res) => {
   try {
     const tests = await ItemTest.find()
+      .populate("table")
+      .populate("tableidfield")
       .populate({
         path: "category",
         populate: { path: "department" }, // <-- populate department inside category
@@ -77,13 +79,40 @@ const getTestsByCategory = async (req, res) => {
 const updateTest = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, price } = req.body;
+    const {
+      testname,
+      unittest,
+      normalrange,
+      table,
+      tableidfield,
+      testcharge,
+      category,
+    } = req.body;
+
+    // Validate category if provided
+    if (category) {
+      const categoryExists = await ItemCategory.findById(category);
+      if (!categoryExists) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+    }
 
     const updated = await ItemTest.findByIdAndUpdate(
       id,
-      { name, price },
+      {
+        testname,
+        unittest,
+        normalrange,
+        table,
+        tableidfield,
+        testcharge,
+        category,
+      },
       { new: true }
-    );
+    ).populate({
+      path: "category",
+      populate: { path: "department" },
+    });
 
     if (!updated) {
       return res.status(404).json({ message: "Test not found" });
