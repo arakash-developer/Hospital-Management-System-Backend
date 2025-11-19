@@ -4,7 +4,7 @@ const tableIdFieldSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  category: {
+  table: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Table",
     required: true,

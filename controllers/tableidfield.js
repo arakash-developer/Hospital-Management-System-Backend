@@ -3,16 +3,16 @@ const TableIdField = require("../models/tableidfield");
 // CREATE
 const createTableIdField = async (req, res) => {
   try {
-    const { tableidfield, category } = req.body;
+    const { tableidfield, table } = req.body;
 
-    if (!tableidfield || !category) {
+    if (!tableidfield || !table) {
       return res.status(400).json({
         success: false,
-        message: "tableidfield and category are required",
+        message: "tableidfield and table are required",
       });
     }
 
-    const data = await TableIdField.create({ tableidfield, category });
+    const data = await TableIdField.create({ tableidfield, table });
 
     res.status(201).json({
       success: true,
@@ -30,12 +30,9 @@ const createTableIdField = async (req, res) => {
 // GET ALL
 const getTableIdFields = async (req, res) => {
   try {
-    const data = await TableIdField.find().populate("category");
+    const data = await TableIdField.find().populate("table");
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -47,7 +44,7 @@ const getTableIdFields = async (req, res) => {
 // GET ONE
 const getTableIdFieldById = async (req, res) => {
   try {
-    const data = await TableIdField.findById(req.params.id).populate("category");
+    const data = await TableIdField.findById(req.params.id).populate("table");
 
     if (!data) {
       return res.status(404).json({
@@ -71,11 +68,9 @@ const getTableIdFieldById = async (req, res) => {
 // UPDATE
 const updateTableIdField = async (req, res) => {
   try {
-    const data = await TableIdField.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const data = await TableIdField.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     if (!data) {
       return res.status(404).json({

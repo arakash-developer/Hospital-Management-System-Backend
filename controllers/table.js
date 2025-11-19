@@ -32,10 +32,7 @@ const getTables = async (req, res) => {
   try {
     const tables = await Table.find().populate("category");
 
-    res.status(200).json({
-      success: true,
-      data: tables,
-    });
+    res.status(200).json(tables);
   } catch (error) {
     res.status(500).json({
       success: false,
