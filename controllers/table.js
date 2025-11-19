@@ -30,7 +30,7 @@ const createTable = async (req, res) => {
 // GET ALL TABLES
 const getTables = async (req, res) => {
   try {
-    const tables = await Table.find().populate("category");
+    const tables = await Table.find().populate("category").sort({ _id: -1 });
 
     res.status(200).json(tables);
   } catch (error) {
