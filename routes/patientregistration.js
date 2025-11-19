@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const {createPatient,getAllPatients,getPatientById,deletePatient,getPatientByPatientId} = require("../controllers/patientregistration");
+const isReceiptionist = require("../middlewares/isreceiption");
+
+const {
+  createPatient,
+  getAllPatients,
+  getPatientById,
+  deletePatient,
+  getPatientByPatientId,
+} = require("../controllers/patientregistration");
 
 // Routes
-router.post("/", createPatient);
-router.get("/", getAllPatients);
-router.get("/:id", getPatientById);
-router.get("/patientid/:id", getPatientByPatientId); // search by patientid
-router.delete("/:id", deletePatient);
-
+router.post("/", isReceiptionist, createPatient);
+router.get("/", isReceiptionist, getAllPatients);
+router.get("/:id", isReceiptionist, getPatientById);
+router.get("/patientid/:id", isReceiptionist, getPatientByPatientId); // search by patientid
+router.delete("/:id", isReceiptionist, deletePatient);
 module.exports = router;

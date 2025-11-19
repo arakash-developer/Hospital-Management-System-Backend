@@ -14,7 +14,7 @@ const isReceiption = require("../middlewares/isreceiption");
 router.post("/", isReceiption, createCategory);
 
 // Get all categories
-router.get("/", getCategories);
+router.get("/", isReceiption, getCategories);
 
 // Update category
 router.put("/:id", isReceiption, updateCategory);

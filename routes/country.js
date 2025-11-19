@@ -14,7 +14,7 @@ const isReceiption = require("../middlewares/isreceiption");
 router.post("/", isReceiption, createCountry);
 
 // Get All
-router.get("/", getCountries);
+router.get("/", isReceiption, getCountries);
 
 // Update
 router.put("/:id", isReceiption, updateCountry);

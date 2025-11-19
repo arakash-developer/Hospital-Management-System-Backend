@@ -15,10 +15,10 @@ const isReceiption = require("../middlewares/isreceiption");
 router.post("/", isReceiption, createTest);
 
 // Get all tests
-router.get("/", getTests);
+router.get("/", isReceiption, getTests);
 
 // Get tests by category
-router.get("/category/:categoryId", getTestsByCategory);
+router.get("/category/:categoryId", isReceiption, getTestsByCategory);
 
 // Update test
 router.put("/:id", isReceiption, updateTest);

@@ -9,8 +9,8 @@ const {
 const isReceiption = require("../middlewares/isreceiption");
 
 router.post("/", isReceiption, departmentCreate);
-router.get("/", getDepartments);
-router.put("/:id", updateDepartment);
-router.delete("/:id", deleteDepartment);
+router.get("/", isReceiption, getDepartments);
+router.put("/:id", isReceiption, updateDepartment);
+router.delete("/:id", isReceiption, deleteDepartment);
 
 module.exports = router;
