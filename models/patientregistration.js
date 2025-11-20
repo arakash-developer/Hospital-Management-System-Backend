@@ -4,6 +4,7 @@ const Counter = require("./patiendidgen"); // import counter model
 const patientRegistrationSchema = new mongoose.Schema({
   patientid: { type: String, unique: true },
   date: { type: Date, required: true, default: Date.now },
+  deleveryDate: { type: Date, required: true, default: Date.now },
   patientname: { type: String, required: true },
   sex: { type: String, required: true },
   age: { type: String, required: true }, // no unique here
@@ -24,11 +25,11 @@ const patientRegistrationSchema = new mongoose.Schema({
       due: { type: Number, required: true },
     },
   ],
-  totalCharge: { type: Number, default: 0 },
-  totalDiscount: { type: Number, default: 0 },
-  totalDiscounted: { type: Number, default: 0 },
-  totalPaid: { type: Number, default: 0 },
-  totalDue: { type: Number, default: 0 },
+  totalCharge: { type: Number, default: 0, required: true },
+  totalDiscount: { type: Number, default: 0, required: true },
+  totalDiscounted: { type: Number, default: 0, required: true },
+  totalPaid: { type: Number, default: 0, required: true },
+  totalDue: { type: Number, default: 0, required: true },
 });
 
 // Pre-save hook to auto-generate 5-digit patientid
