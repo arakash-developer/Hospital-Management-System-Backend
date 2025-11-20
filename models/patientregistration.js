@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const patientRegistrationSchema = new mongoose.Schema({
-  patientid: { type: String, unique: true},
+  patientid: { type: String, unique: true, required: true },
   date: { type: Date, required: true, default: Date.now },
   deleveryDate: { type: Date, required: true, default: Date.now },
   patientname: { type: String, required: true },
