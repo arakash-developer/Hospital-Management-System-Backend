@@ -29,6 +29,7 @@ const PatientRegistration = require("./routes/patientregistration");
 const Report = require("./routes/report");
 const Table = require("./routes/table");
 const Tableidfield = require("./routes/tableidfield");
+const Patientidgen = require("./routes/patientidgen");
 
 app.use("/api/wellcome", wellcomeRoutes);
 app.use("/api/users", userRoutes);
@@ -43,6 +44,7 @@ app.use("/api/patientregistration", PatientRegistration);
 app.use("/api/report", Report);
 app.use("/api/table", Table);
 app.use("/api/tableidfield", Tableidfield);
+app.use("/api/nextpatientid", Patientidgen);
 // Connect to MongoDB using .env value
 mongoose
   .connect(process.env.MONGO_URI)
