@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Counter = require("./patiendidgen"); // import counter model
 
 const patientRegistrationSchema = new mongoose.Schema({
-  patientid: { type: String, required: true, unique: true },
+  patientid: { type: String, unique: true },
   date: { type: Date, required: true, default: Date.now },
   patientname: { type: String, required: true },
   sex: { type: String, required: true },
@@ -11,17 +11,16 @@ const patientRegistrationSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   procedures: [
     {
-      procedureName: { type: String, required: true },
-      procedureCharge: { type: Number, required: true },
+      testname: { type: String, required: true },
+      testcharge: { type: Number, required: true },
     },
   ],
   procedurecalculation: [
     {
-      name: { type: String, required: true },
-      total: { type: Number, required: true },
+      depname: { type: String, required: true },
+      totalPrice: { type: Number, required: true },
       discount: { type: Number, required: true },
       discounted: { type: Number, required: true },
-      paid: { type: Number, required: true },
       due: { type: Number, required: true },
     },
   ],
