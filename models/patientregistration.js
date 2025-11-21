@@ -31,6 +31,7 @@ const patientRegistrationSchema = new mongoose.Schema({
       discount: { type: Number, required: true },
       discounted: { type: Number, required: true },
       due: { type: Number, required: true },
+      paid: { type: Number, required: false, default: 0 },
     },
   ],
 
