@@ -19,7 +19,9 @@ const departmentCreate = async (req, res) => {
 
 const getDepartments = async (req, res) => {
   try {
-    const departments = await Department.find().sort({ _id: -1 });
+    const departments = await Department.find({ status: "active" }).sort({
+      _id: -1,
+    });
     return res.status(200).json(departments);
   } catch (error) {
     console.error("Error fetching departments:", error);
@@ -59,16 +61,24 @@ const updateDepartment = async (req, res) => {
 const deleteDepartment = async (req, res) => {
   try {
     const deptId = req.params.id;
-    const deletedDept = await Department.findByIdAndDelete(deptId);
 
-    if (!deletedDept) {
+    const updatedDept = await Department.findByIdAndUpdate(
+      deptId,
+      { status: "inactive" },
+      { new: true }
+    );
+
+    if (!updatedDept) {
       return res.status(404).json({ message: "Department not found" });
     }
 
-    return res.status(200).json({ message: "Department deleted successfully" });
+    return res.status(200).json({
+      message: "Department deactivated successfully (status = inactive)",
+      department: updatedDept,
+    });
   } catch (error) {
     console.error("Error deleting department:", error);
-    return res.status(500).json({ message: "Failed to delete Department" });
+    return res.status(500).json({ message: "Failed to deactivate Department" });
   }
 };
 
