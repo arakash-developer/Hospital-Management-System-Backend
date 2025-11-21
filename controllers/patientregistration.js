@@ -29,6 +29,7 @@ const getAllPatients = async (req, res) => {
     const patients = await PatientRegistration.find()
       .populate("refDoctor") // optional: populate doctor details
       .populate("procedures.test") // test details
+      .populate("receptionist") // receptionist details
       .sort({ _id: -1 }) // latest first
       .skip(skip)
       .limit(limit)
