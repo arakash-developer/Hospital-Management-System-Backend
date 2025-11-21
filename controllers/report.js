@@ -1,13 +1,14 @@
 // controllers/patientController.js
-const Patient = require("../models/patientregistration"); 
+const Patient = require("../models/patientregistration");
 
 /**
  * Get patients by single date
- * GET /api/patients?date=yyyy-mm-dd
+ * GET /api/patients?date=yyyy-mm-dd&page=1&limit=10
  */
 const getPatientsByDate = async (req, res) => {
   try {
-    const { date } = req.query; // "yyyy-mm-dd"
+    const { date, page = 1, limit = 10 } = req.query;
+
     if (!date) {
       return res.status(400).json({ message: "Date query parameter is required" });
     }
@@ -16,15 +17,28 @@ const getPatientsByDate = async (req, res) => {
     const startDay = new Date(`${date}T00:00:00Z`);
     const endDay = new Date(`${date}T23:59:59Z`);
 
-    // Fetch patients in this date
-    const patients = await Patient.find({
-      date: { $gte: startDay, $lte: endDay },
-    }).sort({ date: -1 });
+    // Build query
+    const query = { date: { $gte: startDay, $lte: endDay } };
+
+    let patients;
+    let totalPatients = await Patient.countDocuments(query);
+
+    if (limit === "all") {
+      // Return all patients
+      patients = await Patient.find(query).sort({ date: -1 });
+    } else {
+      // Return paginated patients
+      const skip = (Number(page) - 1) * Number(limit);
+      patients = await Patient.find(query)
+        .sort({ date: -1 })
+        .skip(skip)
+        .limit(Number(limit));
+    }
 
     return res.status(200).json({
-      page: 1,
-      limit: patients.length,
-      totalPatients: patients.length,
+      page: limit === "all" ? 1 : Number(page),
+      limit: limit === "all" ? totalPatients : Number(limit),
+      totalPatients,
       data: patients,
     });
   } catch (error) {
