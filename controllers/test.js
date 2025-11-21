@@ -43,7 +43,7 @@ const createTest = async (req, res) => {
 // GET ALL TESTS
 const getTests = async (req, res) => {
   try {
-    const tests = await ItemTest.find()
+    const tests = await ItemTest.find({ status: "active" })
       .populate("table")
       .populate("tableidfield")
       .populate({
@@ -128,13 +128,19 @@ const updateTest = async (req, res) => {
   }
 };
 
-// DELETE TEST
+
+
+// DELETE TEST (soft delete)
 const deleteTest = async (req, res) => {
   try {
     const id = req.params.id;
-    const deleted = await ItemTest.findByIdAndDelete(id);
+    const updated = await ItemTest.findByIdAndUpdate(
+      id,
+      { status: "inactive" },
+      { new: true }
+    );
 
-    if (!deleted) {
+    if (!updated) {
       return res.status(404).json({ message: "Test not found" });
     }
 
