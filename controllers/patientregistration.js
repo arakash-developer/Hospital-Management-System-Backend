@@ -4,6 +4,8 @@ const PatientRegistration = require("../models/patientregistration");
 const createPatient = async (req, res) => {
   try {
     const patient = new PatientRegistration(req.body);
+    console.log(req.body);
+    
     await patient.save();
     res
       .status(201)

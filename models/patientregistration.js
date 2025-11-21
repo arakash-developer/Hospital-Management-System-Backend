@@ -9,7 +9,11 @@ const patientRegistrationSchema = new mongoose.Schema({
   age: { type: String, required: true },
   refDoctor: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
   phone: { type: String, required: true },
-
+  receptionist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   procedures: [
     {
       test: {
