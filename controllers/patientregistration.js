@@ -26,6 +26,7 @@ const getAllPatients = async (req, res) => {
     // Fetch patients with pagination
     const patients = await PatientRegistration.find()
       .populate("refDoctor") // optional: populate doctor details
+      .populate("procedures.test") // test details
       .sort({ _id: -1 }) // latest first
       .skip(skip)
       .limit(limit)
@@ -47,7 +48,6 @@ const getAllPatients = async (req, res) => {
   }
 };
 
-
 // GET single patient by ID
 const getPatientById = async (req, res) => {
   try {
@@ -65,12 +65,13 @@ const getPatientById = async (req, res) => {
 // GET single patient by patientid
 const getPatientByPatientId = async (req, res) => {
   try {
-    const patient = await PatientRegistration.findOne({ patientid: req.params.id })
+    const patient = await PatientRegistration.findOne({
+      patientid: req.params.id,
+    })
       .populate("refDoctor")
       .exec();
 
-    if (!patient)
-      return res.status(404).json({ message: "Patient not found" });
+    if (!patient) return res.status(404).json({ message: "Patient not found" });
 
     res.status(200).json(patient);
   } catch (error) {
@@ -78,8 +79,6 @@ const getPatientByPatientId = async (req, res) => {
     res.status(500).json({ message: "Error fetching patient", error });
   }
 };
-
-
 
 // DELETE patient by ID
 const deletePatient = async (req, res) => {

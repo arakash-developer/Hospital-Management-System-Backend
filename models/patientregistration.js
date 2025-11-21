@@ -12,8 +12,11 @@ const patientRegistrationSchema = new mongoose.Schema({
 
   procedures: [
     {
-      testname: { type: String, required: true },
-      testcharge: { type: Number, required: true },
+      test: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Test",
+        required: true,
+      },
     },
   ],
 
