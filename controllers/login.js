@@ -34,6 +34,8 @@ const login = async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful",
+      name: foundUser.name,
+      username: foundUser.username,
       token: {
         tok: token,
         role: foundUser.role,
