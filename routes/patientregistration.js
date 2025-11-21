@@ -16,4 +16,5 @@ router.get("/", isReceiptionist, getAllPatients);
 router.get("/:id", isReceiptionist, getPatientById);
 router.get("/patientid/:id", isReceiptionist, getPatientByPatientId); // search by patientid
 router.delete("/:id", isReceiptionist, deletePatient);
+
 module.exports = router;

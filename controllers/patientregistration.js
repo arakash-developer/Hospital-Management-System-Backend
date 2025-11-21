@@ -95,10 +95,65 @@ const deletePatient = async (req, res) => {
   }
 };
 
+
+
+
+const updatePatientRegistration = async (req, res) => {
+  try {
+    const { patientid } = req.params;
+
+    let patient = await PatientRegistration.findOne({ patientid });
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    /** ------------------------------
+     * UPDATE ONLY procedurecalculation
+     * ------------------------------*/
+    if (req.body.procedurecalculation) {
+      patient.procedurecalculation = req.body.procedurecalculation;
+    } else {
+      return res.status(400).json({
+        message: "procedurecalculation is required for this update"
+      });
+    }
+
+    /** ------------------------------
+     * RECALCULATE TOTALS ONLY
+     * ------------------------------*/
+    const calc = patient.procedurecalculation;
+
+    patient.totalCharge = calc.reduce((sum, item) => sum + item.totalPrice, 0);
+    patient.totalDiscount = calc.reduce((sum, item) => sum + item.discount, 0);
+    patient.totalDiscounted = calc.reduce((sum, item) => sum + item.discounted, 0);
+    patient.totalPaid = calc.reduce((sum, item) => sum + (item.paid || 0), 0);
+    patient.totalDue = patient.totalDiscounted - patient.totalPaid;
+
+    await patient.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Billing updated successfully",
+      patient,
+    });
+
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({
+      message: "Error updating billing",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
 module.exports = {
   createPatient,
   getAllPatients,
   getPatientById,
   deletePatient,
   getPatientByPatientId,
+  updatePatientRegistration,
 };
