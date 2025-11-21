@@ -28,7 +28,7 @@ const createCategory = async (req, res) => {
 // GET ALL CATEGORIES
 const getCategories = async (req, res) => {
   try {
-    const categories = await ItemCategory.find()
+    const categories = await ItemCategory.find({ status: "active" })
       .populate("department")
       .sort({ _id: -1 });
     res.status(200).json(categories);
@@ -65,19 +65,28 @@ const updateCategory = async (req, res) => {
 };
 
 // DELETE CATEGORY
+// SOFT DELETE CATEGORY (status = inactive)
 const deleteCategory = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const deleted = await ItemCategory.findByIdAndDelete(id);
-    if (!deleted) {
+    const updated = await ItemCategory.findByIdAndUpdate(
+      id,
+      { status: "inactive" },
+      { new: true }
+    );
+
+    if (!updated) {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    res.status(200).json({ message: "Category deleted successfully" });
+    res.status(200).json({
+      message: "Category deactivated successfully (status set to inactive)",
+      category: updated,
+    });
   } catch (error) {
     console.error("Error deleting category:", error);
-    res.status(500).json({ message: "Failed to delete category" });
+    res.status(500).json({ message: "Failed to deactivate category" });
   }
 };
 
