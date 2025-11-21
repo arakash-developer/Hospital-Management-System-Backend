@@ -9,6 +9,11 @@ const tableIdFieldSchema = new mongoose.Schema({
     ref: "Table",
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["active", "inactive"], // only these two allowed
+    default: "active", // default = active
+  },
 });
 
 module.exports = mongoose.model("TableIdField", tableIdFieldSchema);

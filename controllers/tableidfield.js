@@ -30,7 +30,7 @@ const createTableIdField = async (req, res) => {
 // GET ALL
 const getTableIdFields = async (req, res) => {
   try {
-    const data = await TableIdField.find().populate("table");
+    const data = await TableIdField.find({ status: "active" }).populate("table");
 
     res.status(200).json(data);
   } catch (error) {
@@ -95,7 +95,11 @@ const updateTableIdField = async (req, res) => {
 // DELETE
 const deleteTableIdField = async (req, res) => {
   try {
-    const data = await TableIdField.findByIdAndDelete(req.params.id);
+    const data = await TableIdField.findByIdAndUpdate(
+      req.params.id,
+      { status: "inactive" },
+      { new: true }
+    );
 
     if (!data) {
       return res.status(404).json({
@@ -106,7 +110,8 @@ const deleteTableIdField = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "TableIdField deleted successfully",
+      message: "TableIdField deactivated successfully (status = inactive)",
+      data,
     });
   } catch (error) {
     res.status(500).json({
@@ -115,6 +120,7 @@ const deleteTableIdField = async (req, res) => {
     });
   }
 };
+
 
 // EXPORT ALL FUNCTIONS
 module.exports = {
