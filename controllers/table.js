@@ -30,7 +30,7 @@ const createTable = async (req, res) => {
 // GET ALL TABLES
 const getTables = async (req, res) => {
   try {
-    const tables = await Table.find().populate("category").sort({ _id: -1 });
+    const tables = await Table.find({ status: "active" }).populate("category").sort({ _id: -1 });
 
     res.status(200).json(tables);
   } catch (error) {
@@ -92,10 +92,14 @@ const updateTable = async (req, res) => {
   }
 };
 
-// DELETE TABLE
+// SOFT DELETE TABLE (status = inactive)
 const deleteTable = async (req, res) => {
   try {
-    const table = await Table.findByIdAndDelete(req.params.id);
+    const table = await Table.findByIdAndUpdate(
+      req.params.id,
+      { status: "inactive" },
+      { new: true }
+    );
 
     if (!table) {
       return res.status(404).json({
@@ -106,8 +110,10 @@ const deleteTable = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Table deleted successfully",
+      message: "Table deactivated (status set to inactive)",
+      table
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -115,6 +121,7 @@ const deleteTable = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   createTable,

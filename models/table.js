@@ -11,6 +11,11 @@ const tableSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["active", "inactive"], // only these two allowed
+    default: "active", // default = active
+  },
 });
 
 module.exports = mongoose.model("Table", tableSchema);
