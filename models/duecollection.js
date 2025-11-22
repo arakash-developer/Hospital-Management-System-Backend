@@ -1,26 +1,12 @@
 const mongoose = require("mongoose");
 
-const dueCollectionHistorySchema = new mongoose.Schema({
+const dueSchema = new mongoose.Schema({
   patient: { type: mongoose.Schema.Types.ObjectId, ref: "PatientRegistration", required: true },
+  paid: { type: Number, default: 0 },       // total paid
+  due: { type: Number, default: 0 },        // total due
+  discount: { type: Number, default: 0 },   // total discount
   updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  procedurecalculation: [
-    {
-      depname: String,
-      totalPrice: Number,
-      discount: Number,
-      discounted: Number,
-      paid: Number,
-      due: Number
-    }
-  ],
-  totals: {
-    totalCharge: Number,
-    totalDiscount: Number,
-    totalDiscounted: Number,
-    totalPaid: Number,
-    totalDue: Number
-  },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now }   // when this due was recorded
 });
 
-module.exports = mongoose.model("DueCollectionHistory", dueCollectionHistorySchema);
+module.exports = mongoose.model("Due", dueSchema);

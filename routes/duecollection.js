@@ -2,18 +2,14 @@ const express = require("express");
 const isReceiptionist = require("../middlewares/isreceiption");
 const router = express.Router();
 const {
-  updateBillingWithSnapshotHistory,
-  getDueCollectionHistoryByDate,
+  createOrUpdateDue,
+  getDueByPatient
 } = require("../controllers/duecollection");
-router.put(
-  "/patientid/:patientid",
-  isReceiptionist,
-  updateBillingWithSnapshotHistory
-);
+router.put("/patientid/:patientid", isReceiptionist, createOrUpdateDue);
 router.get(
   "/patientid/:patientid",
   isReceiptionist,
-  getDueCollectionHistoryByDate
+  getDueByPatient
 );
 
 module.exports = router;
