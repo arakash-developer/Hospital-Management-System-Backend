@@ -1,20 +1,47 @@
 const PatientRegistration = require("../models/patientregistration");
+const Invoice = require("../models/invoice");
 
 // CREATE a new patient registration
+
 const createPatient = async (req, res) => {
   try {
     const patient = new PatientRegistration(req.body);
-    // console.log(req.body);
     
+    // Calculate totals
+    const calc = patient.procedurecalculation || [];
+    patient.totalCharge = calc.reduce((sum, item) => sum + item.totalPrice, 0);
+    patient.totalDiscount = calc.reduce((sum, item) => sum + item.discount, 0);
+    patient.totalDiscounted = calc.reduce((sum, item) => sum + item.discounted, 0);
+    patient.totalPaid = calc.reduce((sum, item) => sum + (item.paid || 0), 0);
+    patient.totalDue = patient.totalDiscounted - patient.totalPaid;
+
     await patient.save();
-    res
-      .status(201)
-      .json({ message: "Patient registered successfully", patient });
+
+    // Automatically create invoice
+    const invoice = new Invoice({
+      patient: patient._id,
+      total: patient.totalCharge,
+      discount: patient.totalDiscount,
+      discounted: patient.totalDiscounted,
+      paid: patient.totalPaid,
+      due: patient.totalDue,
+      updatedBy: patient.receptionist
+    });
+
+    await invoice.save();
+
+    res.status(201).json({
+      message: "Patient registered and invoice created successfully",
+      patient,
+      invoice
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creating patient", error });
   }
 };
+
 
 // GET all patients
 // GET all patients with pagination
